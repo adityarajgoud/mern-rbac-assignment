@@ -38,6 +38,14 @@ const deleteUser = async (req, res) => {
     if (!user)
       return res.status(404).json({ message: "User object not found" });
 
+    // ====== SAFETY RULE: BOOT IF ADMIN TRIES TO DELETE THEMSELVES ======
+    if (user._id.toString() === req.user._id.toString()) {
+      return res.status(400).json({
+        message:
+          "Security Violation: You cannot delete your own administrative account while logged in.",
+      });
+    }
+
     await user.deleteOne();
     res.json({ message: "User record completely removed from node cluster" });
   } catch (error) {
