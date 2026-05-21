@@ -17,7 +17,8 @@ connectDB();
 const app = express();
 
 // Apply Global App Middlewares
-app.use(cors());
+// Updated cors config to prevent cross-origin blocks from your deployed frontend
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
 // Bind Application REST Endpoints
@@ -43,3 +44,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server executing safely on port ${PORT}`);
 });
+
+// ====== CRITICAL VERCEL DEPLOYMENT EXPORT ======
+// Required so Vercel can parse this file as a serverless execution module
+module.exports = app;
