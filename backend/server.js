@@ -17,8 +17,16 @@ connectDB();
 const app = express();
 
 // Apply Global App Middlewares
-// Updated cors config to prevent cross-origin blocks from your deployed frontend
-app.use(cors({ origin: true, credentials: true }));
+// Explicit CORS configuration targeting your production frontend and local dev servers
+app.use(
+  cors({
+    origin: ["https://mern-rbac-frontend.vercel.app", "http://localhost:5173"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+
 app.use(express.json());
 
 // Bind Application REST Endpoints
